@@ -5,11 +5,13 @@ namespace App\Controllers;
 use App\Models\userModel;
 use CodeIgniter\Controller;
 use Tests\Support\Models\UserModel as ModelsUserModel;
+use Exception;
 
 class User extends Controller
 {
     public function index()
     {
+        
         $model = new userModel();
         $data = [
             'user' => $model->getUser()
@@ -39,7 +41,7 @@ class User extends Controller
 
         if($this->validate($rules)){
             $model->save([
-                'ID' => $this->request->getVar('id'),
+                'ID' => $this->request->getVar('id'), 
                 'NomeCompleto' => $this->request->getVar('NomeCompleto'),
                 'Email' => $this->request->getVar('Email'),
             ]);
@@ -47,7 +49,6 @@ class User extends Controller
 
         echo view('templates/header');
         echo view('pages/success' );
-        echo view('templates/footer', );
         } else {
             echo view('templates/header',);
             echo view('pages/form' );
@@ -62,8 +63,9 @@ class User extends Controller
     //     $data['user'] = $model->getUser($id);
     
     //     if(empty($data['user'])){
-    //         // throw new CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('não encontrei este usuário');
-    //         throw new \CodeIgniter\Exceptions\ConfigException('não encontrei este usuário');
+    //         throw new \CodeIgniter\Exceptions\PageNotFoundException('não encontrei este usuário');
+    //         // throw new \CodeIgniter\Exceptions\ConfigException('não encontrei este usuário');
+            
     //     };
 
     //     $data = [
@@ -79,15 +81,17 @@ class User extends Controller
         
     // }
 
-    public function editar()
+    public function editar($id = null)
     {
             $uri = current_url(true);
-            $usuario_id = $uri->getSegment(5);
-            $model = new UserModel();
+            $usuario_id = $uri->getSegment(4);
+            $model = new userModel();
             $result = $model->find($usuario_id);
 
+            // var_dump($model['ID']);die;
+
             $data = [
-                'data' =>  $result,
+                'user' => $model->getUser()
             ];
             helper(['form']);
 
@@ -104,16 +108,24 @@ class User extends Controller
                 } else {
                     //salva no BD
                     $newData = [
-                        'ID' => $usuario_id, 
+                        'ID' => $this->request->getVar('ID'), 
                         'NomeCompleto' => $this->request->getVar('NomeCompleto'),
                         'Email' => $this->request->getVar('Email'),
                     ];
-
-
                 }
+                if ($model->save($newData)) {
+                        if ( isset($id) ) {
+                            return redirect()->to('./user/create');
+                        } else {
+                            return redirect()->to('./ci4/public/user');
+                        }
+                    } else {
+                        echo "Erro ao salvar";
+                        exit;
+                    }
             }
-            echo view('templates/header',);
-            echo view('pages/editForm', $data );
+            echo view('templates/header', );
+            echo view('pages/editForm', $result );
             echo view('templates/footer', );
         }
     
@@ -124,6 +136,5 @@ class User extends Controller
 
         echo view('templates/header');
         echo view('pages/delete_success' );
-        echo view('templates/footer', );
     }
 }
