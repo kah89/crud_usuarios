@@ -14,11 +14,11 @@ class userModel extends Model{
     protected $deletedField = 'deleted_at';
 
 
-    public function getUser($id = null){
-        if($id === null){
+    public function getUser($ID = null){
+        if($ID === null){
             return $this->findAll();     
             // return $this->withDelete()->findAll();    
         }
-        return $this->asArray()->where(['ID' => $id])->first();
+        return $this->asArray()->where(['ID' => $ID])->first();
     }
 }

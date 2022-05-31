@@ -33,7 +33,7 @@ $routes->setAutoRoute(true);
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 // $routes->get('/', 'Home::index');
-$routes->get('cadastro', 'User::create');
+// $routes->get('cadastro', 'User::create');
 $routes->match(['get','post'],'/', 'User::index');
 // $routes->match(['get','post'],'/editarUser/(:num)', 'User::editar');
 // $routes->match(['get','post'],'/cadastrarUser', 'User::cadastrar');
