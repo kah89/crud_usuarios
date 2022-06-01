@@ -53,7 +53,7 @@
                                 <td><?php echo $user_item['Email'] ?></td>
                                 <td>
                                     <a href='./user/editar/<?php echo $user_item['ID'] ?>'><i class="fa fa-edit" style="color: blue"></i></a> -
-                                    <a href='./user/delete/<?php echo $user_item['ID'] ?>' onclick="return confirma()"><i class="fa fa-trash"  style="color: red"></i></a>
+                                    <a href='/user/delete/<?php echo $user_item['ID'] ?>' onclick="return confirma()"><i class="fa fa-trash"  style="color: red"></i></a>
                                 </td>
 
                                

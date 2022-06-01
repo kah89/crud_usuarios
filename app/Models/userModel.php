@@ -5,6 +5,7 @@ use CodeIgniter\Model;
 class userModel extends Model{
     protected $table = 'usuario';
     protected $primaryKey = 'ID';
+    protected $returnType = 'array';
     protected $allowedFields = ['NomeCompleto', 'Email', 'created_at', 'updated_at', 'deleted_at'];
     protected $useSoftDeletes = true;
 

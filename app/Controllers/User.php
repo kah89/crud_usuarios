@@ -56,79 +56,79 @@ class User extends Controller
         }
     }
 
-    public function editar($ID = null){
-        helper('form');
-        $model = new userModel();
+    // public function editar($ID = null){
+    //     helper('form');
+    //     $model = new userModel();
 
-        $data['user'] = $model->getUser($ID);
-    // var_dump($data['user']);die;
-        if(empty($data['user'])){
-            throw new \CodeIgniter\Exceptions\PageNotFoundException('não encontrei este usuário');
-            // throw new \CodeIgniter\Exceptions\ConfigException('não encontrei este usuário');
-        };
-        // var_dump(empty($data['user']));die;
+    //     $data['user'] = $model->getUser($ID);
+    // // var_dump($data['user']);die;
+    //     if(empty($data['user'])){
+    //         throw new \CodeIgniter\Exceptions\PageNotFoundException('não encontrei este usuário');
+    //         // throw new \CodeIgniter\Exceptions\ConfigException('não encontrei este usuário');
+    //     };
+    //     // var_dump(empty($data['user']));die;
 
-        $data = [
-            'ID' => $data['user']['ID'],
-            'NomeCompleto' => $data['user']['NomeCompleto'],
-            'Email' => $data['user']['Email'],
-        ];
+    //     $data = [
+    //         'ID' => $data['user']['ID'],
+    //         'NomeCompleto' => $data['user']['NomeCompleto'],
+    //         'Email' => $data['user']['Email'],
+    //     ];
+
    
-        echo view('templates/header',);
-        echo view('pages/Form', $data );
-        echo view('templates/footer', );
-        
-        
-    }
+    //     echo view('templates/header',);
+    //     echo view('pages/Form', $data );
+    //     echo view('templates/footer', ); 
+    // }
 
-    // public function editar2($ID = null)
-    // {
-    //         $uri = current_url(true);
-    //         $usuario_id = $uri->getSegment(4);
-    //         $model = new userModel();
-    //         $result = $model->find($usuario_id);
+    public function editar($ID = null)
+    {
+            $uri = current_url(true);
+            $usuario_id = $uri->getSegment(4);
+            $model = new userModel();
+            $result = $model->find($usuario_id);
 
-    //         // var_dump($model['ID']);die;
+            // var_dump($result);die;
+            $data = [
+                'user' => $model->getUser()
+            ];
+            helper(['form']);
 
-    //         $data = [
-    //             'user' => $model->getUser()
-    //         ];
-    //         helper(['form']);
+            if ($this->request->getMethod() == 'post') {
+                //VALIDAÇÕES
+                $rules = [
+                    'NomeCompleto' =>'required|min_length[6]|max_length[100]|',
+                    'Email' => 'required|min_length[6]|max_length[100]|valid_email'
+                ];
 
-    //         if ($this->request->getMethod() == 'post') {
-    //             //VALIDAÇÕES
-    //             $rules = [
-    //                 'NomeCompleto' =>'required|min_length[6]|max_length[100]|',
-    //                 'Email' => 'required|min_length[6]|max_length[100]|valid_email'
-    //             ];
-
-
-    //             if (!$this->validate($rules)) {
-    //                 $data['validation'] = $this->validator;
-    //             } else {
-    //                 //salva no BD
-    //                 $newData = [
-    //                     'ID' => $ID, 
-    //                     'NomeCompleto' => $this->request->getVar('NomeCompleto'),
-    //                     'Email' => $this->request->getVar('Email'),
-    //                 ];
-    //             }
-    //             // var_dump($newData );die;s
-    //             if ($model->save($newData)) {
-    //                     if ( isset($ID) ) {
-    //                         return redirect()->to('./user/create');
-    //                     } else {
-    //                         return redirect()->to('./ci4/public/user');
-    //                     }
-    //                 } else {
-    //                     echo "Erro ao salvar";
-    //                     exit;
-    //                 }
-    //         }
-    //         echo view('templates/header', );
-    //         echo view('pages/editForm', $result );
-    //         echo view('templates/footer', );
-    //     }
+            
+                if (!$this->validate($rules)) {
+                    $data['validation'] = $this->validator;
+                } else {
+                    //salva no BD
+                    $newdData = [
+                        'ID' => $this->request->getVar('ID'), 
+                        'NomeCompleto' => $this->request->getVar('NomeCompleto'),
+                        'Email' => $this->request->getVar('Email'),
+                    ];
+                } 
+            
+                // var_dump($data);die;
+                
+                if ($model->save($newdData)) {
+                        if (isset($ID))  {
+                            // var_dump(isset($ID));die;
+                            // return redirect()->to('./pages/success');
+                            return redirect()->to(base_url().'/user/editar/'.$newdData['ID']);
+                        } else {
+                            return redirect()->to(base_url().'/ci4/public/user');
+                        }
+                    } 
+                    var_dump($model->save($newdData));die;
+                }
+            echo view('templates/header', );
+            echo view('pages/editform', $result);
+            echo view('templates/footer', );
+        }
     
 
     public function delete($ID = null){

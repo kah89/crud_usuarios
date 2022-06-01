@@ -35,6 +35,9 @@ $routes->setAutoRoute(true);
 // $routes->get('/', 'Home::index');
 // $routes->get('cadastro', 'User::create');
 $routes->match(['get','post'],'/', 'User::index');
+$routes->match(['get','post'],'user/create', 'User::create');
+$routes->match(['get','post'],'user/editar', 'User::editar');
+$routes->match(['get','post'],'user/delete', 'User::delete');
 // $routes->match(['get','post'],'/editarUser/(:num)', 'User::editar');
 // $routes->match(['get','post'],'/cadastrarUser', 'User::cadastrar');
 

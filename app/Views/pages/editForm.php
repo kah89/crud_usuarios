@@ -2,7 +2,7 @@
 <h2><?php echo isset($ID) ? "Editar" : " Cadastrar" ;?></h2>
 <?php echo \config\Services::validation()->listErrors();?>
 
-<form action="./store2" method="post">
+<form action="./" method="post">
     <div class="form-group">
         <label for="NomeCompleto"> Nome Completo:</label>
         <input type="text" class="form-control" name="NomeCompleto" id="nome" value="<?php echo isset($NomeCompleto) ? $NomeCompleto : set_value('NomeCompleto')?>">
